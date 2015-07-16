@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Internal library of functions for module newmodule
+ * Internal library of functions for module virtualstudent
  *
- * All the newmodule specific functions, needed to implement the module
+ * All the virtualstudent specific functions, needed to implement the module
  * logic, should go here. Never include this file from your lib.php!
  *
- * @package    mod_newmodule
+ * @package    mod_virtualstudent
  * @copyright  2015 Your Name
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @param array $things
  * @return object
- *function newmodule_do_something_useful(array $things) {
+ *function virtualstudent_do_something_useful(array $things) {
  *    return new stdClass();
  *}
  */

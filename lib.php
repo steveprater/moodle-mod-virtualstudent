@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of interface functions and constants for module newmodule
+ * Library of interface functions and constants for module virtualstudent
  *
  * All the core Moodle functions, neeeded to allow the module to work
  * integrated in Moodle should be placed here.
  *
- * All the newmodule specific functions, needed to implement all the module
+ * All the virtualstudent specific functions, needed to implement all the module
  * logic, should go to locallib.php. This will help to save some memory when
  * Moodle is performing actions across all modules.
  *
- * @package    mod_newmodule
+ * @package    mod_virtualstudent
  * @copyright  2015 Your Name
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -46,7 +46,7 @@ define('NEWMODULE_ULTIMATE_ANSWER', 42);
  * @param string $feature FEATURE_xx constant for requested feature
  * @return mixed true if the feature is supported, null if unknown
  */
-function newmodule_supports($feature) {
+function virtualstudent_supports($feature) {
 
     switch($feature) {
         case FEATURE_MOD_INTRO:
@@ -63,59 +63,59 @@ function newmodule_supports($feature) {
 }
 
 /**
- * Saves a new instance of the newmodule into the database
+ * Saves a new instance of the virtualstudent into the database
  *
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will create a new instance and return the id number
  * of the new instance.
  *
- * @param stdClass $newmodule Submitted data from the form in mod_form.php
- * @param mod_newmodule_mod_form $mform The form instance itself (if needed)
- * @return int The id of the newly inserted newmodule record
+ * @param stdClass $virtualstudent Submitted data from the form in mod_form.php
+ * @param mod_virtualstudent_mod_form $mform The form instance itself (if needed)
+ * @return int The id of the newly inserted virtualstudent record
  */
-function newmodule_add_instance(stdClass $newmodule, mod_newmodule_mod_form $mform = null) {
+function virtualstudent_add_instance(stdClass $virtualstudent, mod_virtualstudent_mod_form $mform = null) {
     global $DB;
 
-    $newmodule->timecreated = time();
+    $virtualstudent->timecreated = time();
 
     // You may have to add extra stuff in here.
 
-    $newmodule->id = $DB->insert_record('newmodule', $newmodule);
+    $virtualstudent->id = $DB->insert_record('virtualstudent', $virtualstudent);
 
-    newmodule_grade_item_update($newmodule);
+    virtualstudent_grade_item_update($virtualstudent);
 
-    return $newmodule->id;
+    return $virtualstudent->id;
 }
 
 /**
- * Updates an instance of the newmodule in the database
+ * Updates an instance of the virtualstudent in the database
  *
  * Given an object containing all the necessary data,
  * (defined by the form in mod_form.php) this function
  * will update an existing instance with new data.
  *
- * @param stdClass $newmodule An object from the form in mod_form.php
- * @param mod_newmodule_mod_form $mform The form instance itself (if needed)
+ * @param stdClass $virtualstudent An object from the form in mod_form.php
+ * @param mod_virtualstudent_mod_form $mform The form instance itself (if needed)
  * @return boolean Success/Fail
  */
-function newmodule_update_instance(stdClass $newmodule, mod_newmodule_mod_form $mform = null) {
+function virtualstudent_update_instance(stdClass $virtualstudent, mod_virtualstudent_mod_form $mform = null) {
     global $DB;
 
-    $newmodule->timemodified = time();
-    $newmodule->id = $newmodule->instance;
+    $virtualstudent->timemodified = time();
+    $virtualstudent->id = $virtualstudent->instance;
 
     // You may have to add extra stuff in here.
 
-    $result = $DB->update_record('newmodule', $newmodule);
+    $result = $DB->update_record('virtualstudent', $virtualstudent);
 
-    newmodule_grade_item_update($newmodule);
+    virtualstudent_grade_item_update($virtualstudent);
 
     return $result;
 }
 
 /**
- * Removes an instance of the newmodule from the database
+ * Removes an instance of the virtualstudent from the database
  *
  * Given an ID of an instance of this module,
  * this function will permanently delete the instance
@@ -124,18 +124,18 @@ function newmodule_update_instance(stdClass $newmodule, mod_newmodule_mod_form $
  * @param int $id Id of the module instance
  * @return boolean Success/Failure
  */
-function newmodule_delete_instance($id) {
+function virtualstudent_delete_instance($id) {
     global $DB;
 
-    if (! $newmodule = $DB->get_record('newmodule', array('id' => $id))) {
+    if (! $virtualstudent = $DB->get_record('virtualstudent', array('id' => $id))) {
         return false;
     }
 
     // Delete any dependent records here.
 
-    $DB->delete_records('newmodule', array('id' => $newmodule->id));
+    $DB->delete_records('virtualstudent', array('id' => $virtualstudent->id));
 
-    newmodule_grade_item_delete($newmodule);
+    virtualstudent_grade_item_delete($virtualstudent);
 
     return true;
 }
@@ -151,10 +151,10 @@ function newmodule_delete_instance($id) {
  * @param stdClass $course The course record
  * @param stdClass $user The user record
  * @param cm_info|stdClass $mod The course module info object or record
- * @param stdClass $newmodule The newmodule instance record
+ * @param stdClass $virtualstudent The virtualstudent instance record
  * @return stdClass|null
  */
-function newmodule_user_outline($course, $user, $mod, $newmodule) {
+function virtualstudent_user_outline($course, $user, $mod, $virtualstudent) {
 
     $return = new stdClass();
     $return->time = 0;
@@ -171,21 +171,21 @@ function newmodule_user_outline($course, $user, $mod, $newmodule) {
  * @param stdClass $course the current course record
  * @param stdClass $user the record of the user we are generating report for
  * @param cm_info $mod course module info
- * @param stdClass $newmodule the module instance record
+ * @param stdClass $virtualstudent the module instance record
  */
-function newmodule_user_complete($course, $user, $mod, $newmodule) {
+function virtualstudent_user_complete($course, $user, $mod, $virtualstudent) {
 }
 
 /**
  * Given a course and a time, this module should find recent activity
- * that has occurred in newmodule activities and print it out.
+ * that has occurred in virtualstudent activities and print it out.
  *
  * @param stdClass $course The course record
  * @param bool $viewfullnames Should we display full names
  * @param int $timestart Print activity since this timestamp
  * @return boolean True if anything was printed, otherwise false
  */
-function newmodule_print_recent_activity($course, $viewfullnames, $timestart) {
+function virtualstudent_print_recent_activity($course, $viewfullnames, $timestart) {
     return false;
 }
 
@@ -194,7 +194,7 @@ function newmodule_print_recent_activity($course, $viewfullnames, $timestart) {
  *
  * This callback function is supposed to populate the passed array with
  * custom activity records. These records are then rendered into HTML via
- * {@link newmodule_print_recent_mod_activity()}.
+ * {@link virtualstudent_print_recent_mod_activity()}.
  *
  * Returns void, it adds items into $activities and increases $index.
  *
@@ -206,11 +206,11 @@ function newmodule_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $userid check for a particular user's activity only, defaults to 0 (all users)
  * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
  */
-function newmodule_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
+function virtualstudent_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
 }
 
 /**
- * Prints single activity item prepared by {@link newmodule_get_recent_mod_activity()}
+ * Prints single activity item prepared by {@link virtualstudent_get_recent_mod_activity()}
  *
  * @param stdClass $activity activity record with added 'cmid' property
  * @param int $courseid the id of the course we produce the report for
@@ -218,7 +218,7 @@ function newmodule_get_recent_mod_activity(&$activities, &$index, $timestart, $c
  * @param array $modnames as returned by {@link get_module_types_names()}
  * @param bool $viewfullnames display users' full names
  */
-function newmodule_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
+function virtualstudent_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
 }
 
 /**
@@ -231,7 +231,7 @@ function newmodule_print_recent_mod_activity($activity, $courseid, $detail, $mod
  *
  * @return boolean
  */
-function newmodule_cron () {
+function virtualstudent_cron () {
     return true;
 }
 
@@ -243,26 +243,26 @@ function newmodule_cron () {
  *
  * @return array
  */
-function newmodule_get_extra_capabilities() {
+function virtualstudent_get_extra_capabilities() {
     return array();
 }
 
 /* Gradebook API */
 
 /**
- * Is a given scale used by the instance of newmodule?
+ * Is a given scale used by the instance of virtualstudent?
  *
- * This function returns if a scale is being used by one newmodule
+ * This function returns if a scale is being used by one virtualstudent
  * if it has support for grading and scales.
  *
- * @param int $newmoduleid ID of an instance of this module
+ * @param int $virtualstudentid ID of an instance of this module
  * @param int $scaleid ID of the scale
- * @return bool true if the scale is used by the given newmodule instance
+ * @return bool true if the scale is used by the given virtualstudent instance
  */
-function newmodule_scale_used($newmoduleid, $scaleid) {
+function virtualstudent_scale_used($virtualstudentid, $scaleid) {
     global $DB;
 
-    if ($scaleid and $DB->record_exists('newmodule', array('id' => $newmoduleid, 'grade' => -$scaleid))) {
+    if ($scaleid and $DB->record_exists('virtualstudent', array('id' => $virtualstudentid, 'grade' => -$scaleid))) {
         return true;
     } else {
         return false;
@@ -270,17 +270,17 @@ function newmodule_scale_used($newmoduleid, $scaleid) {
 }
 
 /**
- * Checks if scale is being used by any instance of newmodule.
+ * Checks if scale is being used by any instance of virtualstudent.
  *
  * This is used to find out if scale used anywhere.
  *
  * @param int $scaleid ID of the scale
- * @return boolean true if the scale is used by any newmodule instance
+ * @return boolean true if the scale is used by any virtualstudent instance
  */
-function newmodule_scale_used_anywhere($scaleid) {
+function virtualstudent_scale_used_anywhere($scaleid) {
     global $DB;
 
-    if ($scaleid and $DB->record_exists('newmodule', array('grade' => -$scaleid))) {
+    if ($scaleid and $DB->record_exists('virtualstudent', array('grade' => -$scaleid))) {
         return true;
     } else {
         return false;
@@ -288,29 +288,29 @@ function newmodule_scale_used_anywhere($scaleid) {
 }
 
 /**
- * Creates or updates grade item for the given newmodule instance
+ * Creates or updates grade item for the given virtualstudent instance
  *
  * Needed by {@link grade_update_mod_grades()}.
  *
- * @param stdClass $newmodule instance object with extra cmidnumber and modname property
+ * @param stdClass $virtualstudent instance object with extra cmidnumber and modname property
  * @param bool $reset reset grades in the gradebook
  * @return void
  */
-function newmodule_grade_item_update(stdClass $newmodule, $reset=false) {
+function virtualstudent_grade_item_update(stdClass $virtualstudent, $reset=false) {
     global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
 
     $item = array();
-    $item['itemname'] = clean_param($newmodule->name, PARAM_NOTAGS);
+    $item['itemname'] = clean_param($virtualstudent->name, PARAM_NOTAGS);
     $item['gradetype'] = GRADE_TYPE_VALUE;
 
-    if ($newmodule->grade > 0) {
+    if ($virtualstudent->grade > 0) {
         $item['gradetype'] = GRADE_TYPE_VALUE;
-        $item['grademax']  = $newmodule->grade;
+        $item['grademax']  = $virtualstudent->grade;
         $item['grademin']  = 0;
-    } else if ($newmodule->grade < 0) {
+    } else if ($virtualstudent->grade < 0) {
         $item['gradetype'] = GRADE_TYPE_SCALE;
-        $item['scaleid']   = -$newmodule->grade;
+        $item['scaleid']   = -$virtualstudent->grade;
     } else {
         $item['gradetype'] = GRADE_TYPE_NONE;
     }
@@ -319,40 +319,40 @@ function newmodule_grade_item_update(stdClass $newmodule, $reset=false) {
         $item['reset'] = true;
     }
 
-    grade_update('mod/newmodule', $newmodule->course, 'mod', 'newmodule',
-            $newmodule->id, 0, null, $item);
+    grade_update('mod/virtualstudent', $virtualstudent->course, 'mod', 'virtualstudent',
+            $virtualstudent->id, 0, null, $item);
 }
 
 /**
- * Delete grade item for given newmodule instance
+ * Delete grade item for given virtualstudent instance
  *
- * @param stdClass $newmodule instance object
+ * @param stdClass $virtualstudent instance object
  * @return grade_item
  */
-function newmodule_grade_item_delete($newmodule) {
+function virtualstudent_grade_item_delete($virtualstudent) {
     global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
 
-    return grade_update('mod/newmodule', $newmodule->course, 'mod', 'newmodule',
-            $newmodule->id, 0, null, array('deleted' => 1));
+    return grade_update('mod/virtualstudent', $virtualstudent->course, 'mod', 'virtualstudent',
+            $virtualstudent->id, 0, null, array('deleted' => 1));
 }
 
 /**
- * Update newmodule grades in the gradebook
+ * Update virtualstudent grades in the gradebook
  *
  * Needed by {@link grade_update_mod_grades()}.
  *
- * @param stdClass $newmodule instance object with extra cmidnumber and modname property
+ * @param stdClass $virtualstudent instance object with extra cmidnumber and modname property
  * @param int $userid update grade of specific user only, 0 means all participants
  */
-function newmodule_update_grades(stdClass $newmodule, $userid = 0) {
+function virtualstudent_update_grades(stdClass $virtualstudent, $userid = 0) {
     global $CFG, $DB;
     require_once($CFG->libdir.'/gradelib.php');
 
     // Populate array of grade objects indexed by userid.
     $grades = array();
 
-    grade_update('mod/newmodule', $newmodule->course, 'mod', 'newmodule', $newmodule->id, 0, $grades);
+    grade_update('mod/virtualstudent', $virtualstudent->course, 'mod', 'virtualstudent', $virtualstudent->id, 0, $grades);
 }
 
 /* File API */
@@ -368,14 +368,14 @@ function newmodule_update_grades(stdClass $newmodule, $userid = 0) {
  * @param stdClass $context
  * @return array of [(string)filearea] => (string)description
  */
-function newmodule_get_file_areas($course, $cm, $context) {
+function virtualstudent_get_file_areas($course, $cm, $context) {
     return array();
 }
 
 /**
- * File browsing support for newmodule file areas
+ * File browsing support for virtualstudent file areas
  *
- * @package mod_newmodule
+ * @package mod_virtualstudent
  * @category files
  *
  * @param file_browser $browser
@@ -389,25 +389,25 @@ function newmodule_get_file_areas($course, $cm, $context) {
  * @param string $filename
  * @return file_info instance or null if not found
  */
-function newmodule_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
+function virtualstudent_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     return null;
 }
 
 /**
- * Serves the files from the newmodule file areas
+ * Serves the files from the virtualstudent file areas
  *
- * @package mod_newmodule
+ * @package mod_virtualstudent
  * @category files
  *
  * @param stdClass $course the course object
  * @param stdClass $cm the course module object
- * @param stdClass $context the newmodule's context
+ * @param stdClass $context the virtualstudent's context
  * @param string $filearea the name of the file area
  * @param array $args extra arguments (itemid, path)
  * @param bool $forcedownload whether or not force download
  * @param array $options additional options affecting the file serving
  */
-function newmodule_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
+function virtualstudent_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -422,28 +422,28 @@ function newmodule_pluginfile($course, $cm, $context, $filearea, array $args, $f
 /* Navigation API */
 
 /**
- * Extends the global navigation tree by adding newmodule nodes if there is a relevant content
+ * Extends the global navigation tree by adding virtualstudent nodes if there is a relevant content
  *
  * This can be called by an AJAX request so do not rely on $PAGE as it might not be set up properly.
  *
- * @param navigation_node $navref An object representing the navigation tree node of the newmodule module instance
+ * @param navigation_node $navref An object representing the navigation tree node of the virtualstudent module instance
  * @param stdClass $course current course record
- * @param stdClass $module current newmodule instance record
+ * @param stdClass $module current virtualstudent instance record
  * @param cm_info $cm course module information
  */
-function newmodule_extend_navigation(navigation_node $navref, stdClass $course, stdClass $module, cm_info $cm) {
+function virtualstudent_extend_navigation(navigation_node $navref, stdClass $course, stdClass $module, cm_info $cm) {
     // TODO Delete this function and its docblock, or implement it.
 }
 
 /**
- * Extends the settings navigation with the newmodule settings
+ * Extends the settings navigation with the virtualstudent settings
  *
- * This function is called when the context for the page is a newmodule module. This is not called by AJAX
+ * This function is called when the context for the page is a virtualstudent module. This is not called by AJAX
  * so it is safe to rely on the $PAGE.
  *
  * @param settings_navigation $settingsnav complete settings navigation tree
- * @param navigation_node $newmodulenode newmodule administration node
+ * @param navigation_node $virtualstudentnode virtualstudent administration node
  */
-function newmodule_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $newmodulenode=null) {
+function virtualstudent_extend_settings_navigation(settings_navigation $settingsnav, navigation_node $virtualstudentnode=null) {
     // TODO Delete this function and its docblock, or implement it.
 }

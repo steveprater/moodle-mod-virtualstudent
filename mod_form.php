@@ -15,12 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main newmodule configuration form
+ * The main virtualstudent configuration form
  *
  * It uses the standard core Moodle formslib. For more info about them, please
  * visit: http://docs.moodle.org/en/Development:lib/formslib.php
  *
- * @package    mod_newmodule
+ * @package    mod_virtualstudent
  * @copyright  2015 Your Name
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,11 +32,11 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
 /**
  * Module instance settings form
  *
- * @package    mod_newmodule
+ * @package    mod_virtualstudent
  * @copyright  2015 Your Name
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_newmodule_mod_form extends moodleform_mod {
+class mod_virtualstudent_mod_form extends moodleform_mod {
 
     /**
      * Defines forms elements
@@ -49,7 +49,7 @@ class mod_newmodule_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('newmodulename', 'newmodule'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('virtualstudentname', 'virtualstudent'), array('size' => '64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
@@ -57,20 +57,20 @@ class mod_newmodule_mod_form extends moodleform_mod {
         }
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->addHelpButton('name', 'newmodulename', 'newmodule');
+        $mform->addHelpButton('name', 'virtualstudentname', 'virtualstudent');
 
         // Adding the standard "intro" and "introformat" fields.
         $this->add_intro_editor();
 
-        // Adding the rest of newmodule settings, spreading all them into this fieldset
+        // Adding the rest of virtualstudent settings, spreading all them into this fieldset
         // ... or adding more fieldsets ('header' elements) if needed for better logic.
-        $mform->addElement('static', 'label1', 'newmodulesetting1', 'Your newmodule fields go here. Replace me!');
+        //$mform->addElement('static', 'label1', 'virtualstudentsetting1', 'Your virtualstudent fields go here. Replace me!');
 
-        $mform->addElement('header', 'newmodulefieldset', get_string('newmodulefieldset', 'newmodule'));
-        $mform->addElement('static', 'label2', 'newmodulesetting2', 'Your newmodule fields go here. Replace me!');
+        //$mform->addElement('header', 'virtualstudentfieldset', get_string('virtualstudentfieldset', 'virtualstudent'));
+        //$mform->addElement('static', 'label2', 'virtualstudentsetting2', 'Your virtualstudent fields go here. Replace me!');
 
         // Add standard grading elements.
-        $this->standard_grading_coursemodule_elements();
+        //$this->standard_grading_coursemodule_elements();
 
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
